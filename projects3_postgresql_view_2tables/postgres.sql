@@ -35,7 +35,8 @@ CREATE TABLE employee
     emp_address character varying(50),
     emp_dob timestamp(6) without time zone,
     client_id integer,
-    CONSTRAINT employee_pkey PRIMARY KEY (id)
+    CONSTRAINT employee_pkey PRIMARY KEY (id),
+    CONSTRAINT client_id_fkey FOREIGN KEY (client_id) REFERENCES gppasaporte.client(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 
@@ -53,23 +54,23 @@ id, client_num, client_fname, client_lname, client_initial, client_address, clie
 VALUES (3,3,'Weeeww','Eksdii','W.','42069# Uwu St. Gamer City',6666);
 
 
-INSERT INTO public.employee(
-id, client_num, client_fname, client_lname, client_initial, client_address, client_contact) 
-VALUES (1,1,'Mitsuki','Isutsukakushi','D.','5050# Japan St. Manila City','2021-08-20 00:00:00.000',1);
+INSERT INTO gppasaporte.employee
+(emp_num, emp_fname, emp_lname, emp_initial, emp_address, emp_dob, client_id)
+VALUES(1, 'Mitsuki', 'Isutsukakushi', 'D.', '5050# Japan St. Manila City', '2021-08-20 00:00:00.000', 1);
+
+INSERT INTO gppasaporte.employee
+(emp_num, emp_fname, emp_lname, emp_initial, emp_address, emp_dob, client_id)
+VALUES (2,'Rejolio','Santiago','J.','5555# Refiro St. Cebu City','2021-09-02 00:00:00.000', 2);
 
 
-INSERT INTO public.employee(
-id, client_num, client_fname, client_lname, client_initial, client_address, client_contact) 
-VALUES (2,2,'Rejolio','Santiago','J.','5555# Refiro St. Cebu City','2021-09-02 00:00:00.000',2);
-
-INSERT INTO public.employee(
-id, client_num, client_fname, client_lname, client_initial, client_address, client_contact) 
-VALUES (3,3,'Leticia','Refaula','Z.','7777# Victorious St. Vatican City','2021-07-07 00:00:00.000',3);
+INSERT INTO public.employee
+(emp_num, emp_fname, emp_lname, emp_initial, emp_address, emp_dob)
+VALUES (0,'Leticia','Refaula','Z.','7777# Victorious St. Vatican City','2021-07-07 00:00:00.000');
 
 
 
 
-CREATE VIEW employee_client AS
+CREATE VIEW gppasaporte.employee_client AS
 SELECT
    client.id,
    client.client_fname,
@@ -78,5 +79,5 @@ SELECT
    client.client_contact,
    client.client_address
 FROM
-   client
-INNER JOIN employee ON employee.emp_num = client.client_num;
+   gppasaporte.client
+INNER JOIN gppasaporte.employee ON gppasaporte.employee.emp_num = gppasaporte.client.client_num;
